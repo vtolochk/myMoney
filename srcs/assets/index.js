@@ -1,0 +1,1 @@
+export { default as MoneyAnimation } from './LottieFiles/MoneyAnimation.json'
