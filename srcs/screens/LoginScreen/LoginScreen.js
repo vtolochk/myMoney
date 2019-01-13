@@ -2,7 +2,8 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { MoneyAnimation } from '@assets'
-import { Container, Header, Button, Icon, Text,  Left, Body, Right, Title } from 'native-base'
+import { Container, Header, Button, Text,  Left, Body, Right, Title } from 'native-base'
+import { withRouter } from 'react-router-native'
 
 const styles = StyleSheet.create({
 	headerText: {
@@ -16,17 +17,17 @@ const styles = StyleSheet.create({
 		alignSelf:'center', 
 		justifyContent: 'center',
 	},
-	googleButton: {
-		alignSelf: 'center', 
-		color: '#E64032',
-		borderColor: '#E64032'
-	},
 	flex: {
 		flex: 1
 	}
 })
 
 class LoginScreen extends React.Component {
+
+	LoginUser = () => {
+		this.props.history.push('/expenses')
+	}
+
 	render() {
 		return (
 			<Container>
@@ -40,9 +41,8 @@ class LoginScreen extends React.Component {
 				<Body style={styles.body}>
 					<Text style={styles.headerText}>Start track your money now!</Text>
 					<LottieView source={MoneyAnimation} autoPlay loop />
-					<Button iconLeft bordered style={styles.googleButton} >
-						<Icon type="MaterialCommunityIcons" name="google" style={{fontSize: 28, color: '#E64032'}}/>
-						<Text style={{ color: '#707070'}} >Login with Google</Text>
+					<Button block onPress={this.LoginUser} >
+						<Text>Start now!</Text>
 					</Button>
 				</Body>
 			</Container>
@@ -50,4 +50,4 @@ class LoginScreen extends React.Component {
 	}
 }
 
-export default LoginScreen
+export default withRouter(LoginScreen)

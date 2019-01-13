@@ -1,49 +1,75 @@
 import React from 'react'
 import { withRouter } from 'react-router'
-import { StyleSheet } from 'react-native'
-import { NativeRouter, Route } from 'react-router-native'
-import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text } from 'native-base'
+import { StyleSheet, View } from 'react-native'
+import { Route } from 'react-router-native'
+import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Left, Body, Right, Title } from 'native-base'
+import { Expenses, Overview, Budgets, Wallet } from '@components'
 
-const Home = () => <Text style={styles.header}>Home</Text>
-const About = () => <Text style={styles.header}>About</Text>
-const Topic = () => <Text style={styles.topic}>Topic</Text>
+class FooterButton extends React.PureComponent {
 
-class FooterButton extends React.Component {
+	onButtonPress = () => {
+		this.props.changeRoute(this.props.path, this.props.text)
+		this.props.history.push(this.props.path)
+	}
+
 	render() {
-		const { text, icon, path, active } = this.props
+		const { text, icon, path, activeRoute } = this.props
 		return (
-			<Button vertical active={active} onPress={() => this.props.history.push(path)}>
-				<Icon name={icon} />
-				<Text>{text}</Text>
+			<Button vertical active={activeRoute === path} onPress={this.onButtonPress}>
+				<View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}><Icon name={icon}/></View>
+				{text && <Text numberOfLines={1} style={{fontSize: 8}}>{text}</Text>}
 			</Button>
 		)
 	}
 }
+
 const NavigationButton = withRouter(FooterButton)
 
+
+const ScreenHeader = ({ title }) => {
+	return (
+		<Header>
+			<Left style={{flex: 1}}/>
+			<Body style={{flex: 1, alignItems:'center'}}>
+				<Title>{title}</Title>
+			</Body>
+			<Right style={{flex: 1}} />
+		</Header>
+	)
+}
+
 class MainScreen extends React.Component {
+
+	state = {
+		activeRoute: '/',
+		open: false,
+		activeTitle: 'Expenses'
+	}
+
+	changeRoute = (activeRoute, activeTitle) => {
+		this.setState({ activeRoute, activeTitle })
+	}
+
 	render() {
-		return (<NativeRouter>
+		return (	
 			<Container>
-			
-				<Header />
+				<ScreenHeader title={this.state.activeTitle} openSide={this.openSide} />
 				<Content >
-					<Route exact path="/" component={Home} />
-					<Route path="/about" component={About} />
-					<Route path="/topics" component={Topic} />
+					<Route path={'/expenses'} component={Expenses} />
+					<Route path={'/overview'} component={Overview} />
+					<Route path={'/budgets'} component={Budgets} />
+					<Route path={'/wallet'} component={Wallet} />
 				</Content>
 				<Footer>
-				
-					<FooterTab>
-						<NavigationButton text='Apps' icon='apps' active path='/'/>
-						<NavigationButton text='Navigate' icon='navigate' path='/topics'/>
-						<NavigationButton text='About' icon='ios-code' path='/about'/>
-						<NavigationButton text='About' icon='md-cash' path='/about'/>
+					<FooterTab style={styles.nav}>
+						<NavigationButton text='Expenses' icon='list' path='/expenses' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
+						<NavigationButton text='Overview' icon='md-stats' path='/overview' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
+						<NavigationButton icon='add' path='/addExpense' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
+						<NavigationButton text='Budgets' icon='md-cash' path='/budgets' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
+						<NavigationButton text='Wallet' icon='settings' path='/wallet' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
 					</FooterTab>
-                
 				</Footer>
 			</Container>
-		</NativeRouter>
 		)
 	}
 }
@@ -53,27 +79,12 @@ const styles = StyleSheet.create({
 		marginTop: 25,
 		padding: 10
 	},
-	header: {
-		fontSize: 20
-	},
 	nav: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'flex-end'
 	},
-	navItem: {
-		flex: 1,
-		alignItems: 'center',
-		padding: 10,
-		justifyContent: 'flex-end',
-	},
-	subNavItem: {
-		padding: 5
-	},
-	topic: {
-		textAlign: 'center',
-		fontSize: 15
-	}
 })
 
-export default MainScreen
+
+export default withRouter(MainScreen)

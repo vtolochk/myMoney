@@ -1,8 +1,6 @@
-import React from "react";
-import { LoginScreen, MainScreen } from '@screens'
+import React from 'react'
+import Navigator from '@navigation'
 
-const App = () => (
-    <MainScreen />
-);
+const App = () => <Navigator />
 
 export default App
