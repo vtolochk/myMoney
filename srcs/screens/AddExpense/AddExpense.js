@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-native'
 import { Container, Content,  Text, Picker,  DatePicker, Textarea, Input, Item } from 'native-base'
-import { ScreenHeaderWithBack } from '@components'
+import { ScreenHeader } from '@components'
 
 class AddExpense extends React.Component {
 	constructor(props) {
@@ -25,7 +25,7 @@ class AddExpense extends React.Component {
 	render() {
 		return (
 			<Container>
-				<ScreenHeaderWithBack history={this.props.history} title='Add expenses'/>
+				<ScreenHeader withBackButton history={this.props.history} title='Add expenses'/>
 				<Content >
 
 					<Text>Add category</Text>

@@ -1,48 +1,22 @@
 import React from 'react'
-import { withRouter } from 'react-router'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Route } from 'react-router-native'
-import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Left, Body, Right, Title } from 'native-base'
-import { Expenses, Overview, Budgets, Wallet } from '@components'
+import { Container, Content, Footer, FooterTab } from 'native-base'
+import { Expenses, Overview, Budgets, Wallet, ScreenHeader } from '@components'
+import { DEFAULT_PATH, ADD_EXPENSE_PATH, EXPENSES_PATH, OVERVIEW_PATH, BUDGET_PATH, WALLET_PATH, NavigationButton } from '@navigation'
 
-class FooterButton extends React.PureComponent {
-
-	onButtonPress = () => {
-		this.props.changeRoute(this.props.path, this.props.text)
-		this.props.history.push(this.props.path)
-	}
-
-	render() {
-		const { text, icon, path, activeRoute } = this.props
-		return (
-			<Button vertical active={activeRoute === path} onPress={this.onButtonPress}>
-				<View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}><Icon name={icon}/></View>
-				{text && <Text numberOfLines={1} style={{fontSize: 8}}>{text}</Text>}
-			</Button>
-		)
-	}
-}
-
-const NavigationButton = withRouter(FooterButton)
-
-
-const ScreenHeader = ({ title }) => {
-	return (
-		<Header>
-			<Left style={{flex: 1}}/>
-			<Body style={{flex: 1, alignItems:'center'}}>
-				<Title>{title}</Title>
-			</Body>
-			<Right style={{flex: 1}} />
-		</Header>
-	)
-}
+const styles = StyleSheet.create({
+	footerTab: {
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'flex-end'
+	},
+})
 
 class MainScreen extends React.Component {
 
 	state = {
-		activeRoute: '/',
-		open: false,
+		activeRoute: DEFAULT_PATH,
 		activeTitle: 'Expenses'
 	}
 
@@ -51,22 +25,52 @@ class MainScreen extends React.Component {
 	}
 
 	render() {
+		const FooterButtons = [
+			{
+				text: 'Expenses',
+				icon: 'list',
+				path: EXPENSES_PATH,
+			},
+			{
+				text: 'Overview',
+				icon: 'md-stats',
+				path: OVERVIEW_PATH,
+			},
+			{
+				icon: 'add',
+				path: ADD_EXPENSE_PATH,
+			},
+			{
+				text: 'Budget',
+				icon: 'md-cash',
+				path: BUDGET_PATH,
+			},
+			{
+				text: 'Wallet',
+				icon: 'settings',
+				path: WALLET_PATH,
+			},
+		]
+		const { activeRoute } = this.state
 		return (	
 			<Container>
-				<ScreenHeader title={this.state.activeTitle} openSide={this.openSide} />
+				<ScreenHeader title={this.state.activeTitle} />
 				<Content >
-					<Route path={'/expenses'} component={Expenses} />
-					<Route path={'/overview'} component={Overview} />
-					<Route path={'/budgets'} component={Budgets} />
-					<Route path={'/wallet'} component={Wallet} />
+					<Route path={EXPENSES_PATH} component={Expenses} />
+					<Route path={OVERVIEW_PATH} component={Overview} />
+					<Route path={BUDGET_PATH} component={Budgets} />
+					<Route path={WALLET_PATH} component={Wallet} />
 				</Content>
 				<Footer>
-					<FooterTab style={styles.nav}>
-						<NavigationButton text='Expenses' icon='list' path='/expenses' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
-						<NavigationButton text='Overview' icon='md-stats' path='/overview' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
-						<NavigationButton icon='add' path='/addExpense' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
-						<NavigationButton text='Budgets' icon='md-cash' path='/budgets' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
-						<NavigationButton text='Wallet' icon='settings' path='/wallet' activeRoute={this.state.activeRoute} changeRoute={this.changeRoute}/>
+					<FooterTab style={styles.footerTab}>
+						{FooterButtons.map((button, i) => <NavigationButton
+							key={i} 
+							text={button.text} 
+							icon={button.icon} 
+							path={button.path} 
+							activeRoute={activeRoute} 
+							changeRoute={this.changeRoute} 
+						/>)}
 					</FooterTab>
 				</Footer>
 			</Container>
@@ -74,17 +78,4 @@ class MainScreen extends React.Component {
 	}
 }
 
-const styles = StyleSheet.create({
-	container: {
-		marginTop: 25,
-		padding: 10
-	},
-	nav: {
-		flexDirection: 'row',
-		justifyContent: 'space-around',
-		alignItems: 'flex-end'
-	},
-})
-
-
-export default withRouter(MainScreen)
+export default MainScreen
