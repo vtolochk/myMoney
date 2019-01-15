@@ -1,0 +1,2 @@
+export const INITIAL_BALANCE = '50000'
+export const INITIAL_CATEGORIES = [ 'Food & Drink', 'Shopping', 'Transport', 'Home', 'Bills & Fees', 'Entertainment', 'Car', 'Travel', 'Family & Personal', 'Education']
