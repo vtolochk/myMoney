@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Route } from 'react-router-native'
 import { Container, Content, Footer, FooterTab } from 'native-base'
 import { Expenses, Overview, Budgets, Wallet, ScreenHeader } from '@components'
-import { DEFAULT_PATH, ADD_EXPENSE_PATH, EXPENSES_PATH, OVERVIEW_PATH, BUDGET_PATH, WALLET_PATH, NavigationButton } from '@navigation'
+import { DEFAULT_PATH, ADD_MONEY_PATH, EXPENSES_PATH, OVERVIEW_PATH, BUDGET_PATH, WALLET_PATH, NavigationButton } from '@navigation'
 
 const styles = StyleSheet.create({
 	footerTab: {
@@ -38,7 +38,7 @@ class MainScreen extends React.Component {
 			},
 			{
 				icon: 'add',
-				path: ADD_EXPENSE_PATH,
+				path: ADD_MONEY_PATH,
 			},
 			{
 				text: 'Budget',
@@ -55,7 +55,7 @@ class MainScreen extends React.Component {
 		return (	
 			<Container>
 				<ScreenHeader title={this.state.activeTitle} />
-				<Content >
+				<Content>
 					<Route path={EXPENSES_PATH} component={Expenses} />
 					<Route path={OVERVIEW_PATH} component={Overview} />
 					<Route path={BUDGET_PATH} component={Budgets} />
