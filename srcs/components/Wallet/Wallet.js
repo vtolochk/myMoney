@@ -44,6 +44,10 @@ class Wallet extends React.Component {
 	openCategoriesScreen = () => {
 		this.props.history.push(CATEGORIES_PATH)
 	}
+
+	comingSoonAlert = () => {
+		alert('Coming soon!', 'Not supported yet.')
+	}
 	
 	render() {
     	const { categories, balance } = this.props
@@ -62,7 +66,7 @@ class Wallet extends React.Component {
     						value={balance}
     						onChangeText={this.onChangeInputText}
     					/>
-    					<Text onPress={() => alert('Coming soon!', 'Not supported yet.')} style={styles.inputCurrency}>UAH</Text>
+    					<Text onPress={this.comingSoonAlert} style={styles.inputCurrency}>UAH</Text>
     				</CardItem>
     			</Card>
     			<Card >
@@ -73,7 +77,6 @@ class Wallet extends React.Component {
     					<Text>{categories.length} categories in total</Text>
     				</CardItem>
     			</Card>
-    			<Button onPress={() => {}} block style={styles.saveButton}><Text>Save changes</Text></Button>
     		</View>
     	)
 	}
