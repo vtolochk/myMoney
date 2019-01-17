@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-native'
 import { StyleSheet, Modal, Text } from 'react-native'
 import { ScreenHeader, AddCategory } from '@components'
-import { addCategoryAction, removeCategoryAction } from '@redux'
+import { addCategoryAction, removeCategoryAction, changeCategoryNameAction } from '@redux'
 import { Button, Container, Content, List, ListItem, Icon, Input, Footer, FooterTab, Toast, Root } from 'native-base'
 
 const styles = StyleSheet.create({
@@ -54,16 +54,16 @@ class CategoriesScreen extends React.Component {
 	}
 
 	render() {
-		const { categories, removeCategory, history } = this.props
+		const { categories, removeCategory, changeCategoryName, history } = this.props
 		return (
 			<Root>
 				<Container>
 					<ScreenHeader withBackButton history={history} title='Categories'/>
 					<Content>
 						<List>
-							{categories.map((category, i) => ( 
+							{categories.map((category, i) => (
 								<ListItem style={styles.listItem} key={i}>
-									<Input>{category}</Input>
+									<Input value={category} onChangeText={(name) => changeCategoryName(name, i)} />
 									<Icon onPress={() => removeCategory(i)} style={styles.trashIcon} name='trash'/>
 								</ListItem> 
 							))}             
@@ -98,7 +98,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	addCategory: (newCategory) => dispatch(addCategoryAction(newCategory)),
-	removeCategory: (index) => dispatch(removeCategoryAction(index))
+	removeCategory: (index) => dispatch(removeCategoryAction(index)),
+	changeCategoryName: (name, index) => dispatch(changeCategoryNameAction(name, index)),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen))
