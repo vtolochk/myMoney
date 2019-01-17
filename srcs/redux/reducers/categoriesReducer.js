@@ -11,8 +11,7 @@ export default function categoriesReducer (state = initialState, action = {}) {
 	switch(action.type) {
 	case ADD_CATEGORY: 
 	{
-		newState.categories.push(action.payload)
-		newState.categories = [...newState.categories]
+		newState.categories = [...newState.categories, action.payload]
 		return newState
 	}
 	case REMOVE_CATEGORY:

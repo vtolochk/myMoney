@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-native'
 import { StyleSheet, Modal, Text } from 'react-native'
 import { ScreenHeader, AddCategory } from '@components'
-import { AddCategoryAction, RemoveCategoryAction } from '@redux'
+import { addCategoryAction, removeCategoryAction } from '@redux'
 import { Button, Container, Content, List, ListItem, Icon, Input, Footer, FooterTab, Toast, Root } from 'native-base'
 
 const styles = StyleSheet.create({
@@ -97,8 +97,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	addCategory: (newCategory) => dispatch(AddCategoryAction(newCategory)),
-	removeCategory: (index) => dispatch(RemoveCategoryAction(index))
+	addCategory: (newCategory) => dispatch(addCategoryAction(newCategory)),
+	removeCategory: (index) => dispatch(removeCategoryAction(index))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen))
