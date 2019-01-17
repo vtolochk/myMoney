@@ -7,6 +7,7 @@ import { CATEGORIES_PATH } from '@navigation'
 import { View, StyleSheet } from 'react-native'
 import { withRouter } from 'react-router-native'
 import { Card, CardItem, Text, Input, Button } from 'native-base'
+import { changeBalanceAction } from '@redux'
 
 
 const styles = StyleSheet.create({
@@ -34,13 +35,10 @@ const styles = StyleSheet.create({
 
 class Wallet extends React.Component {
 
-    state = {
-    	balance: this.props.balance
-    }
-
     onChangeInputText = (balance) => {
-    	if (isNumber(balance))
-    		this.setState({ balance })
+    	if (isNumber(balance)) {
+    		this.props.changeBalance(balance)
+    	}
     }
 	
 	openCategoriesScreen = () => {
@@ -48,7 +46,7 @@ class Wallet extends React.Component {
 	}
 	
 	render() {
-    	const { categories } = this.props
+    	const { categories, balance } = this.props
     	return (
     		<View style={styles.container}>
     			<Card>
@@ -61,7 +59,7 @@ class Wallet extends React.Component {
     						keyboardType={'numeric'} 
     						maxLength={13}
     						style={styles.input}
-    						value={this.state.balance}
+    						value={balance}
     						onChangeText={this.onChangeInputText}
     					/>
     					<Text onPress={() => alert('Coming soon!', 'Not supported yet.')} style={styles.inputCurrency}>UAH</Text>
@@ -91,5 +89,8 @@ const mapStateToProps = state => ({
 	categories: state.categoriesReducer.categories,
 })
 
+const mapDispatchToProps = dispatch => ({
+	changeBalance: (balance) => dispatch(changeBalanceAction(balance))
+})
 
-export default withRouter(connect(mapStateToProps)(Wallet))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Wallet))
