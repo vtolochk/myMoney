@@ -1,5 +1,5 @@
 import React from 'react'
-import { alert } from '@config'
+import { comingSoonAlert } from '@config'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { isNumber } from '@validators'
@@ -44,10 +44,6 @@ class Wallet extends React.Component {
 	openCategoriesScreen = () => {
 		this.props.history.push(CATEGORIES_PATH)
 	}
-
-	comingSoonAlert = () => {
-		alert('Coming soon!', 'Not supported yet.')
-	}
 	
 	render() {
     	const { categories, balance } = this.props
@@ -66,7 +62,7 @@ class Wallet extends React.Component {
     						value={balance}
     						onChangeText={this.onChangeInputText}
     					/>
-    					<Text onPress={this.comingSoonAlert} style={styles.inputCurrency}>UAH</Text>
+    					<Text onPress={comingSoonAlert} style={styles.inputCurrency}>UAH</Text>
     				</CardItem>
     			</Card>
     			<Card >
