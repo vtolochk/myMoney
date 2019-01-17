@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 	},
 	inActive: {
 		color: 'grey', 
-		opacity: 0.3
+		opacity: 0.5
 	}
 })
 

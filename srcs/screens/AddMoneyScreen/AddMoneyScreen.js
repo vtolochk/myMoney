@@ -1,14 +1,13 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { isNumber } from '@validators'
-import { withRouter } from 'react-router-native'
 import { comingSoonAlert } from '@config'
-import { TRANSACTIONS_PATH } from '@navigation'
 import { addTransactionAction } from '@redux'
-import { ScreenHeader, DoubleSegment, DatePickerCard } from '@components'
-import { KeyboardAvoidingView } from 'react-native' // here
-import { Container, Content,  Text, Picker, Input, Button, Icon,  Card, CardItem } from 'native-base'
+import { TRANSACTIONS_PATH } from '@navigation'
+import { withRouter } from 'react-router-native'
+import { StyleSheet, View, ScrollView, Keyboard } from 'react-native'
+import { ScreenHeader, DoubleSegment, DatePickerCard, AddMoneyCard } from '@components'
+import { Container, Content,  Text, Picker, Input, Button, Icon, CardItem } from 'native-base'
 
 const styles = StyleSheet.create({
 	topInput: {
@@ -19,12 +18,12 @@ const styles = StyleSheet.create({
 		color: 'white',
 	},
 	bottomButton: {
-		right: 15,
+		right: 20,
 		position: 'absolute',
 		elevation: 4, 
 		height: 65, 
-		width: 65, 
-		bottom: 15, 
+		width: 65,
+		bottom: 20,
 		borderRadius: 35, 
 		justifyContent: 'center'
 	},
@@ -55,7 +54,28 @@ const styles = StyleSheet.create({
 		padding: 5, 
 		paddingRight: 15
 	},
+	addMoneyCard: {
+		width: '95%', 
+		height: 125
+	},
+	topInputWrapper: {
+		height: 55, 
+		flexDirection: 'row', 
+		backgroundColor: '#3F51B5', 
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	descriptionCardWrapper: {
+		flex: 1, 
+		flexDirection: 'row', 
+		alignItems: 'center'
+	},
+	dropDownPicker: {
+		width: 120
+	}
 })
+
+// so big component ...
 
 class AddMoneyScreen extends React.Component {
 		
@@ -65,12 +85,16 @@ class AddMoneyScreen extends React.Component {
 		description: '',
 		chosenDate: new Date(),
 		segmentType: 'expenses',
+		bottom: 20,
+		keyboardHeight: 0
 	}
 
-	handleSelectionChange = ({ nativeEvent: { selection } }) => this.setState({ selection })
-
 	updateState = (key, value) => {
-		this.setState({ [key]: value})
+		if (key === 'sum') { // handling bottom button position
+			value ? this.setState({ [key]: value, bottom: this.state.keyboardHeight + 20 }) : this.setState({ [key]: value, bottom: 20 }) 
+		} else {
+			this.setState({ [key]: value })
+		}
 	}
 	
 	onFocus = () => {
@@ -78,9 +102,9 @@ class AddMoneyScreen extends React.Component {
 		if (this.state.sum !== '0' && this.state.sum) {
 			const transaction = {
 				sum,
+				description,
 				type: segmentType,
 				date: chosenDate,
-				description: description,
 				category: this.props.categories[selected],
 			}
 			this.props.addTransaction(transaction)
@@ -92,64 +116,81 @@ class AddMoneyScreen extends React.Component {
 
 	componentDidMount() {
 		this.NumberInput.wrappedInstance.focus()
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this.setState({ bottom: 20 }))
+		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', e => this.setState({ keyboardHeight: e.endCoordinates.height }))
+	}
+
+	componentWillUnmount() {
+		this.keyboardDidShowListener.remove()
+		this.keyboardDidHideListener.remove()
 	}
 
 	render() {
+		const keyboardSettings = {
+			caretHidden: true,
+			maxLength: 13,
+			placeholder: '0',
+			style: styles.topInput,
+			keyboardType: 'numeric',
+			placeholderTextColor: styles.topInput.color
+		}
 		return (
-			<Container>
-				<ScreenHeader withBackButton history={this.props.history} title=''/>
-				<Content contentContainerStyle={styles.body}>
-					<View style={{height: 55, flexDirection: 'row', backgroundColor: '#3F51B5', justifyContent: 'center', alignItems: 'center'}}>
-						<Input
-							ref={(r) => this.NumberInput = r} 
-							caretHidden 
-							selectTextOnFocus={false} 
-							style={styles.topInput} 
-							keyboardType={'numeric'}
-							maxLength={13}
-							placeholder={'0'}
-							placeholderTextColor={styles.topInput.color}
-							onChangeText={v => {
-								if (isNumber(v) || !v)
-									this.updateState('sum', v == '0' ? '' : v)
-							}}
-							value={this.state.sum} 
-						/>
-						<Text onPress={comingSoonAlert} style={styles.currencyText}>UAH</Text>
-					</View>
-
-					<DoubleSegment 
-						firstName={'Expenses'} 
-						secondName={'Income'} 
-						onChangeSegment={(active) => this.updateState('segmentType', active === 1 ? 'expenses' : 'income')} 
-						activeNum={this.state.segmentType === 'expenses' ? 1 : 2} 
-					/>
-
-					<DatePickerCard  activeDate={this.state.chosenDate} onDateChange={v => this.updateState('chosenDate', v)} />
-
-					<Card style={{  width: '95%', height: 125,}}>
-						<CardItem bordered header><Text>Choose category</Text></CardItem>
-						<CardItem bordered>
-							<Icon name='list' style={styles.icon}/>	
-							<Picker note mode="dropdown" style={{ width: 120 }} selectedValue={this.state.selected} onValueChange={v => this.updateState('selected', v)}>
-								{this.props.categories.map((label, i) => <Picker.Item label={label} value={i} key={i} />)}
-							</Picker>
-						</CardItem>
-					</Card>
-
-					<Card style={{ width: '95%', height: 125}}>
-						<CardItem bordered header><Text>Add description</Text></CardItem>
-						<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-							<Icon name='ios-paper' style={styles.icon}/>	
-							<Input value={this.state.description} onChangeText={v => this.updateState('description', v)} multiline placeholder='Add some description' />
+			<ScrollView scrollEnabled={false} keyboardShouldPersistTaps='always'>
+				<Container>
+					<ScreenHeader withBackButton history={this.props.history} title='New transaction'/>
+					<Content contentContainerStyle={styles.body}>
+						<View style={styles.topInputWrapper}>
+							<Input
+								{...keyboardSettings}
+								value={this.state.sum}
+								ref={r => this.NumberInput = r}
+								onChangeText={v => { isNumber(v) || !v ? this.updateState('sum', v == '0' ? '' : v) : {} }}
+							/>
+							<Text onPress={comingSoonAlert} style={styles.currencyText}>UAH</Text>
 						</View>
+
+						<DoubleSegment 
+							firstName={'Expenses'} 
+							secondName={'Income'} 
+							activeNum={this.state.segmentType === 'expenses' ? 1 : 2}
+							onChangeSegment={active => this.updateState('segmentType', active === 1 ? 'expenses' : 'income')} 
+						/>
+
+						<DatePickerCard activeDate={this.state.chosenDate} onDateChange={v => this.updateState('chosenDate', v)} />
+
+						<AddMoneyCard style={styles.addMoneyCard} title={'Choose category'}>
+							<CardItem bordered>
+								<Icon name='list' style={styles.icon}/>	
+								<Picker 
+									note 
+									mode="dropdown" 
+									style={styles.dropDownPicker} 
+									selectedValue={this.state.selected} 
+									onValueChange={v => this.updateState('selected', v)}
+								>
+									{this.props.categories.map((label, i) => <Picker.Item label={label} value={i} key={i} />)}
+								</Picker>
+							</CardItem>
+						</AddMoneyCard>
+
+						<AddMoneyCard style={styles.addMoneyCard} title={'Add description'}>
+							<View style={styles.descriptionCardWrapper}>
+								<Icon name='ios-paper' style={styles.icon}/>	
+								<Input
+									multiline 
+									value={this.state.description}
+									placeholder='Add some description'
+									onChangeText={v => this.updateState('description', v)}
+								/>
+							</View>
+						</AddMoneyCard>
 						
-					</Card>
-				</Content>
-				<Button style={styles.bottomButton} onPress={this.onFocus}>
-					<Icon name={(this.state.sum !== '0' && this.state.sum) ? 'md-checkmark' : 'md-cash'}/>
-				</Button>
-			</Container>
+					</Content>
+					<Button style={{...styles.bottomButton, bottom: this.state.bottom}} onPress={this.onFocus}>
+						<Icon name={(this.state.sum !== '0' && this.state.sum) ? 'md-checkmark' : 'ios-keypad'}/>
+					</Button>
+				</Container>
+			</ScrollView>
 		)
 	}
 }
