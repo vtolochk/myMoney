@@ -1,1 +1,4 @@
-export const isNumber = new RegExp(/^(?:[1-9][0-9]*|0)$/)
+export const isNumber = (number) => {    
+	const numberPattern = new RegExp(/^(?:[1-9][0-9]*|0)$/)
+	return numberPattern.exec(number)
+}

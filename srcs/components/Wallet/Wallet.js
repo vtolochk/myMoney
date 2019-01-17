@@ -39,7 +39,7 @@ class Wallet extends React.Component {
     }
 
     onChangeInputText = (balance) => {
-    	if (isNumber.exec(balance))
+    	if (isNumber(balance))
     		this.setState({ balance })
     }
 	
