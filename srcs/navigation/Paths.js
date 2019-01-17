@@ -1,6 +1,6 @@
 export const DEFAULT_PATH = '/'
 export const ADD_MONEY_PATH = '/AddMoney'
-export const EXPENSES_PATH = '/Expenses'
+export const TRANSACTIONS_PATH = '/Transactions'
 export const OVERVIEW_PATH = '/Overview'
 export const BUDGET_PATH = '/Budget'
 export const WALLET_PATH = '/Wallet'

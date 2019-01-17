@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native'
 import { MoneyAnimation } from '@assets'
 import { Container, Header, Button, Text,  Left, Body, Right, Title } from 'native-base'
 import { withRouter } from 'react-router-native'
-import { EXPENSES_PATH } from '@navigation'
+import { TRANSACTIONS_PATH } from '@navigation'
 
 const styles = StyleSheet.create({
 	headerText: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 class LoginScreen extends React.Component {
 
 	LoginUser = () => {
-		this.props.history.push(EXPENSES_PATH)
+		this.props.history.push(TRANSACTIONS_PATH)
 	}
 
 	render() {

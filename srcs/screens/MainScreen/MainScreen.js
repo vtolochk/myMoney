@@ -2,8 +2,8 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Route } from 'react-router-native'
 import { Container, Content, Footer, FooterTab } from 'native-base'
-import { Expenses, Overview, Budgets, Wallet, ScreenHeader } from '@components'
-import { DEFAULT_PATH, ADD_MONEY_PATH, EXPENSES_PATH, OVERVIEW_PATH, BUDGET_PATH, WALLET_PATH, NavigationButton } from '@navigation'
+import { Transactions, Overview, Budgets, Wallet, ScreenHeader } from '@components'
+import { DEFAULT_PATH, ADD_MONEY_PATH, TRANSACTIONS_PATH, OVERVIEW_PATH, BUDGET_PATH, WALLET_PATH, NavigationButton } from '@navigation'
 
 const styles = StyleSheet.create({
 	footerTab: {
@@ -17,7 +17,7 @@ class MainScreen extends React.Component {
 
 	state = {
 		activeRoute: DEFAULT_PATH,
-		activeTitle: 'Expenses'
+		activeTitle: 'Transactions'
 	}
 
 	changeRoute = (activeRoute, activeTitle) => {
@@ -27,9 +27,9 @@ class MainScreen extends React.Component {
 	render() {
 		const FooterButtons = [
 			{
-				text: 'Expenses',
+				text: 'Transactions',
 				icon: 'list',
-				path: EXPENSES_PATH,
+				path: TRANSACTIONS_PATH,
 			},
 			{
 				text: 'Overview',
@@ -56,7 +56,7 @@ class MainScreen extends React.Component {
 			<Container>
 				<ScreenHeader title={this.state.activeTitle} />
 				<Content>
-					<Route path={EXPENSES_PATH} component={Expenses} />
+					<Route path={TRANSACTIONS_PATH} component={Transactions} />
 					<Route path={OVERVIEW_PATH} component={Overview} />
 					<Route path={BUDGET_PATH} component={Budgets} />
 					<Route path={WALLET_PATH} component={Wallet} />
