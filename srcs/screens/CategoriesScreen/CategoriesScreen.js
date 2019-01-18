@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { alert } from '@config'
 import { withRouter } from 'react-router-native'
 import { StyleSheet, Modal, Text } from 'react-native'
 import { ScreenHeader, AddCategory } from '@components'
-import { addCategoryAction, removeCategoryAction, changeCategoryNameAction } from '@redux'
+import { addCategoryAction, removeCategoryAction, changeCategoryNameAction, removeAllTransactionsWithCategoryAction } from '@redux'
 import { Button, Container, Content, List, ListItem, Icon, Input, Footer, FooterTab, Toast, Root } from 'native-base'
 
 const styles = StyleSheet.create({
@@ -53,8 +54,18 @@ class CategoriesScreen extends React.Component {
 		}
 	}
 
+	removeCategory = (index) => {
+		
+		const onOk = () => {
+			this.props.removeAllTransactionsWithCategory(index)
+			this.props.removeCategory(index)
+		}
+
+		alert('Are you sure?', 'It will delete all the transactions with this category as well.', onOk)
+	}
+
 	render() {
-		const { categories, removeCategory, changeCategoryName, history } = this.props
+		const { categories, changeCategoryName, history } = this.props
 		return (
 			<Root>
 				<Container>
@@ -64,7 +75,7 @@ class CategoriesScreen extends React.Component {
 							{categories.map((category, i) => (
 								<ListItem style={styles.listItem} key={i}>
 									<Input value={category} onChangeText={(name) => changeCategoryName(name, i)} />
-									<Icon onPress={() => removeCategory(i)} style={styles.trashIcon} name='trash'/>
+									<Icon onPress={() => this.removeCategory(i)} style={styles.trashIcon} name='trash'/>
 								</ListItem> 
 							))}             
 						</List>
@@ -97,9 +108,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	addCategory: (newCategory) => dispatch(addCategoryAction(newCategory)),
-	removeCategory: (index) => dispatch(removeCategoryAction(index)),
+	addCategory: newCategory => dispatch(addCategoryAction(newCategory)),
+	removeCategory: index => dispatch(removeCategoryAction(index)),
 	changeCategoryName: (name, index) => dispatch(changeCategoryNameAction(name, index)),
+	removeAllTransactionsWithCategory: categoryId => dispatch(removeAllTransactionsWithCategoryAction(categoryId))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen))
