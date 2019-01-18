@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { isNumber } from '@validators'
 import { comingSoonAlert } from '@config'
-import { addTransactionAction } from '@redux'
+import { addTransactionAction, changeTransactionAction, removeTransactionAction } from '@redux'
 import { TRANSACTIONS_PATH } from '@navigation'
 import { withRouter } from 'react-router-native'
 import { StyleSheet, View, ScrollView, Keyboard } from 'react-native'
 import { ScreenHeader, DoubleSegment, DatePickerCard, AddMoneyCard } from '@components'
-import { Container, Content,  Text, Picker, Input, Button, Icon, CardItem } from 'native-base'
+import { Container, Content, Text, Picker, Input, Button, Icon, CardItem } from 'native-base'
 
 const styles = StyleSheet.create({
 	topInput: {
@@ -78,16 +78,31 @@ const styles = StyleSheet.create({
 // so big component ...
 
 class AddMoneyScreen extends React.Component {
+	
+	constructor(props) {
+		super(props)
+		this.isEdit = this.props.location.state ? this.props.location.state.id : -1 // redirect from transaction or main screen
 		
-	state = {
-		sum: '',
-		selected: 0,
-		description: '',
-		chosenDate: new Date(),
-		segmentType: 'expenses',
-		bottom: 20,
-		keyboardHeight: 0
+		this.dateTitle = this.isEdit >= 0 ? 'Edit date' : 'Choose date'
+		this.categoryTitle = this.isEdit >= 0 ? 'Edit category' : 'Choose category'
+		this.headerTitle = this.isEdit >= 0 ? 'Edit transaction' : 'New transaction'
+		this.descriptionTitle = this.isEdit >= 0 ? 'Edit description' : 'Add description'
+
+		let trans = {}
+		if (this.props.transactions)
+			trans = this.props.transactions[this.isEdit]
+
+		this.state = {
+			sum: this.isEdit >= 0 ? trans.sum : '',
+			categoryId: this.isEdit >= 0 ? trans.categoryId : 0,
+			description: this.isEdit >= 0 ? trans.description : '',
+			chosenDate: this.isEdit >= 0 ? new Date(trans.date) : new Date(),
+			segmentType: this.isEdit >= 0 ? trans.type : 'expenses',
+			bottom: 20,
+			keyboardHeight: 0,
+		}
 	}
+
 
 	updateState = (key, value) => {
 		if (key === 'sum') { // handling bottom button position
@@ -96,19 +111,37 @@ class AddMoneyScreen extends React.Component {
 			this.setState({ [key]: value })
 		}
 	}
+
+	onInputChange = (value) => {
+		if (isNumber(value) || !value) {
+			this.updateState('sum', value == '0' ? '' : value)
+		} 
+	}
+
+	addNewTransaction = ({ sum, segmentType, chosenDate, categoryId, description }) => {
+		const transaction = {
+			sum,
+			description,
+			categoryId,
+			type: segmentType,
+			date: chosenDate,
+		}
+		if (this.isEdit >= 0)
+			this.props.updateTransaction(transaction, this.isEdit)
+		else
+			this.props.addTransaction(transaction)
+		
+		this.props.history.push(TRANSACTIONS_PATH)
+	}
+
+	deleteTransaction = () => {
+		this.props.removeTransaction(this.isEdit)
+		this.props.history.push(TRANSACTIONS_PATH)
+	}
 	
 	onFocus = () => {
-		const { sum, segmentType, chosenDate, selected, description } = this.state
 		if (this.state.sum !== '0' && this.state.sum) {
-			const transaction = {
-				sum,
-				description,
-				type: segmentType,
-				date: chosenDate,
-				category: this.props.categories[selected],
-			}
-			this.props.addTransaction(transaction)
-			this.props.history.push(TRANSACTIONS_PATH)
+			this.addNewTransaction(this.state)
 		} else {
 			this.NumberInput.wrappedInstance.focus()
 		}
@@ -137,18 +170,12 @@ class AddMoneyScreen extends React.Component {
 		return (
 			<ScrollView scrollEnabled={false} keyboardShouldPersistTaps='always'>
 				<Container>
-					<ScreenHeader withBackButton history={this.props.history} title='New transaction'/>
+					<ScreenHeader withBackButton history={this.props.history} title={this.headerTitle} withRightButton={this.isEdit >= 0} rightIcon={'md-trash'} onPressRightButton={this.deleteTransaction}/>
 					<Content contentContainerStyle={styles.body}>
 						<View style={styles.topInputWrapper}>
-							<Input
-								{...keyboardSettings}
-								value={this.state.sum}
-								ref={r => this.NumberInput = r}
-								onChangeText={v => { isNumber(v) || !v ? this.updateState('sum', v == '0' ? '' : v) : {} }}
-							/>
+							<Input {...keyboardSettings} value={this.state.sum} ref={r => this.NumberInput = r} onChangeText={this.onInputChange} />
 							<Text onPress={comingSoonAlert} style={styles.currencyText}>UAH</Text>
 						</View>
-
 						<DoubleSegment 
 							firstName={'Expenses'} 
 							secondName={'Income'} 
@@ -156,24 +183,24 @@ class AddMoneyScreen extends React.Component {
 							onChangeSegment={active => this.updateState('segmentType', active === 1 ? 'expenses' : 'income')} 
 						/>
 
-						<DatePickerCard activeDate={this.state.chosenDate} onDateChange={v => this.updateState('chosenDate', v)} />
+						<DatePickerCard title={this.dateTitle} activeDate={this.state.chosenDate} onDateChange={v => this.updateState('chosenDate', v)} />
 
-						<AddMoneyCard style={styles.addMoneyCard} title={'Choose category'}>
+						<AddMoneyCard style={styles.addMoneyCard} title={this.categoryTitle}>
 							<CardItem bordered>
 								<Icon name='list' style={styles.icon}/>	
 								<Picker 
 									note 
 									mode="dropdown" 
 									style={styles.dropDownPicker} 
-									selectedValue={this.state.selected} 
-									onValueChange={v => this.updateState('selected', v)}
+									selectedValue={this.state.categoryId} 
+									onValueChange={v => this.updateState('categoryId', v)}
 								>
 									{this.props.categories.map((label, i) => <Picker.Item label={label} value={i} key={i} />)}
 								</Picker>
 							</CardItem>
 						</AddMoneyCard>
 
-						<AddMoneyCard style={styles.addMoneyCard} title={'Add description'}>
+						<AddMoneyCard style={styles.addMoneyCard} title={this.descriptionTitle}>
 							<View style={styles.descriptionCardWrapper}>
 								<Icon name='ios-paper' style={styles.icon}/>	
 								<Input
@@ -196,11 +223,14 @@ class AddMoneyScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	categories: state.categoriesReducer.categories
+	categories: state.categoriesReducer.categories,
+	transactions: state.transactionReducer.transactions
 })
 
 const mapDispatchToProps = dispatch => ({
-	addTransaction: transaction => dispatch(addTransactionAction(transaction))
+	addTransaction: transaction => dispatch(addTransactionAction(transaction)),
+	updateTransaction: (transaction, index) => dispatch(changeTransactionAction(transaction, index)),
+	removeTransaction: index => dispatch(removeTransactionAction(index))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddMoneyScreen))
