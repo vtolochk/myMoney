@@ -1,4 +1,4 @@
-import { ADD_TRANSACTION, REMOVE_TRANSACTION, CHANGE_TRANSACTION } from '../actionTypes'
+import { ADD_TRANSACTION, REMOVE_TRANSACTION, CHANGE_TRANSACTION, REMOVE_ALL_TRANSACTIONS_WITH_CATEGORY } from '../actionTypes'
 
 const initialState = {
 	transactions: []
@@ -24,6 +24,11 @@ export default function transactionReducer (state = initialState, action = {}) {
 	{
 		newState.transactions[action.payload.index] = action.payload.changedTransaction
 		newState.transactions = [...newState.transactions]
+		return newState
+	}
+	case REMOVE_ALL_TRANSACTIONS_WITH_CATEGORY:
+	{
+		newState.transactions = newState.transactions.filter(trans => trans.categoryId !== action.payload)
 		return newState
 	}
 	default:
