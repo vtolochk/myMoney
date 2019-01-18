@@ -1,6 +1,11 @@
 import React from 'react'
 import { Text } from 'react-native'
+import { connect } from 'react-redux'
 
-const Overview =() => <Text>Overview</Text>
+const Overview = (props) => <Text>Balance = {props.balance}</Text>
 
-export default Overview
+const mapStateToProps = state => ({
+	balance: state.balanceReducer.balance
+})
+
+export default connect(mapStateToProps)(Overview)

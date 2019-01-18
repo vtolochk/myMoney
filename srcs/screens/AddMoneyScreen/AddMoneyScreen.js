@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { isNumber } from '@validators'
 import { comingSoonAlert } from '@config'
-import { addTransactionAction, changeTransactionAction, removeTransactionAction } from '@redux'
 import { TRANSACTIONS_PATH } from '@navigation'
 import { withRouter } from 'react-router-native'
 import { StyleSheet, View, ScrollView, Keyboard } from 'react-native'
 import { ScreenHeader, DoubleSegment, DatePickerCard, AddMoneyCard } from '@components'
 import { Container, Content, Text, Picker, Input, Button, Icon, CardItem } from 'native-base'
+import { addTransactionAction, changeTransactionAction, removeTransactionAction, changeBalanceAction } from '@redux'
 
 const styles = StyleSheet.create({
 	topInput: {
@@ -126,6 +126,15 @@ class AddMoneyScreen extends React.Component {
 			type: segmentType,
 			date: chosenDate,
 		}
+
+		let newBalance = this.props.balance - sum
+		if (segmentType === 'expenses') {
+			this.props.changeBalance(newBalance.toString())
+		} else {
+			newBalance = +this.props.balance + +sum
+			this.props.changeBalance(newBalance.toString())
+		}
+
 		if (this.isEdit >= 0)
 			this.props.updateTransaction(transaction, this.isEdit)
 		else
@@ -224,13 +233,15 @@ class AddMoneyScreen extends React.Component {
 
 const mapStateToProps = state => ({
 	categories: state.categoriesReducer.categories,
-	transactions: state.transactionReducer.transactions
+	transactions: state.transactionReducer.transactions,
+	balance: state.balanceReducer.balance
 })
 
 const mapDispatchToProps = dispatch => ({
 	addTransaction: transaction => dispatch(addTransactionAction(transaction)),
 	updateTransaction: (transaction, index) => dispatch(changeTransactionAction(transaction, index)),
-	removeTransaction: index => dispatch(removeTransactionAction(index))
+	removeTransaction: index => dispatch(removeTransactionAction(index)),
+	changeBalance: balance => dispatch(changeBalanceAction(balance))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddMoneyScreen))
