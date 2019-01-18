@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-native'
 import { ScrollView, View, StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-	center: {
+	view: {
 		padding: 15,
 	},
 	text: {
@@ -28,7 +28,7 @@ class Transactions extends React.PureComponent{
 
 	render() {
 		if (!this.props.transactions.length)
-			return <View style={styles.center}><Text style={styles.text}>There are no transactions yet.</Text></View>
+			return <View style={styles.view}><Text style={styles.text}>There are no transactions yet.</Text></View>
 		return (
 			<ScrollView>
 				<List>

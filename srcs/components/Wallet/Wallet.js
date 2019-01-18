@@ -1,13 +1,13 @@
 import React from 'react'
-import { comingSoonAlert } from '@config'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { isNumber } from '@validators'
+import { comingSoonAlert } from '@config'
+import { changeBalanceAction } from '@redux'
 import { CATEGORIES_PATH } from '@navigation'
 import { View, StyleSheet } from 'react-native'
 import { withRouter } from 'react-router-native'
-import { Card, CardItem, Text, Input, Button } from 'native-base'
-import { changeBalanceAction } from '@redux'
+import { Card, CardItem, Text, Input } from 'native-base'
 
 
 const styles = StyleSheet.create({
