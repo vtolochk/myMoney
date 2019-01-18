@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
 
 class DatePickerCard extends React.Component {
 	render() {
-		const { activeDate, onDateChange } = this.props
+		const { activeDate, onDateChange, title } = this.props
 		return (
 			<Card style={styles.cardWrapper}>
 				<CardItem bordered header>
-					<Text>Choose date</Text>
+					<Text>{title}</Text>
 				</CardItem>
 				<CardItem bordered>
 					<Icon name='calendar' style={styles.icon}/>	
