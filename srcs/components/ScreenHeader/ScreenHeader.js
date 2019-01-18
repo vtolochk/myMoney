@@ -13,16 +13,22 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		minWidth: 100
+	},
+	icon: { // pass style for the icon via props to make it more independent
+		color: 'red',
+		paddingRight: 10
 	}
 })
 
 class ScreenHeader extends React.PureComponent {
 	render() {
-		const { title, history, withBackButton } = this.props
+		const { title, history, withBackButton, withRightButton, rightIcon, onPressRightButton } = this.props
 
 		const withButton = <Left>
 			<Button transparent onPress={() => { history.goBack() }}><Icon name='arrow-back' /></Button>
 		</Left>
+
+		const rightButton = <Right style={styles.flex}><Icon onPress={onPressRightButton} style={styles.icon} name={rightIcon}/></Right>
 		
 		return (
 			<Header>
@@ -30,7 +36,7 @@ class ScreenHeader extends React.PureComponent {
 				<Body style={styles.headerBody}>
 					<Title style={styles.title}>{title}</Title>
 				</Body>
-				<Right style={styles.flex} />
+				{withRightButton ? rightButton : <Right style={styles.flex} />}
 			</Header>
 		)
 	}
