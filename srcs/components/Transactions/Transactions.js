@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { List, Text } from 'native-base'
+import { List, Text  } from 'native-base'
 import { ADD_MONEY_PATH } from '@navigation'
-import { TransactionItem } from '@components'
+import { TransactionItem, CurrentBalanceCard } from '@components'
 import { withRouter } from 'react-router-native'
 import { ScrollView, View, StyleSheet } from 'react-native'
 
@@ -27,16 +27,20 @@ class Transactions extends React.PureComponent{
 	}
 
 	render() {
-		if (!this.props.transactions.length)
+		const { transactions, currentBalance, categories } = this.props
+		
+		if (!transactions.length)
 			return <View style={styles.view}><Text style={styles.text}>There are no transactions yet.</Text></View>
+
 		return (
 			<ScrollView>
+				<CurrentBalanceCard isPositive={Number(currentBalance) >= 0} balance={currentBalance}/>
 				<List>
-					{this.props.transactions.map((trans, i) => (
+					{transactions.map((trans, i) => (
 						<TransactionItem
 							key={i}
 							{...trans}
-							category={this.props.categories[trans.categoryId]}
+							category={categories[trans.categoryId]}
 							onPressItem={() => this.onPressItem(i)}
 							date={trans.date.toString().substr(4, 12)}
 						/>))}
@@ -48,7 +52,8 @@ class Transactions extends React.PureComponent{
 
 const mapStateToProps = state => ({
 	categories: state.categoriesReducer.categories,
-	transactions: state.transactionReducer.transactions
+	transactions: state.transactionReducer.transactions,
+	currentBalance: state.balanceReducer.balance
 })
 
 export default withRouter(connect(mapStateToProps)(Transactions))
