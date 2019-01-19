@@ -129,7 +129,7 @@ class AddMoneyScreen extends React.Component {
 
 		let newBalance = this.props.balance - sum
 		if (segmentType === 'expenses') {
-			this.props.changeBalance(newBalance.toString())
+			this.props.changeBalance(newBalance.toString()) // refactor here
 		} else {
 			newBalance = +this.props.balance + +sum
 			this.props.changeBalance(newBalance.toString())
@@ -144,6 +144,13 @@ class AddMoneyScreen extends React.Component {
 	}
 
 	deleteTransaction = () => {
+		const { type, sum } = this.props.transactions[this.isEdit]
+		let newBalance = +this.props.balance + +sum
+
+		if (type === 'income') {
+			newBalance = this.props.balance - sum
+		}
+		this.props.changeBalance(newBalance.toString())
 		this.props.removeTransaction(this.isEdit)
 		this.props.history.push(TRANSACTIONS_PATH)
 	}
@@ -240,8 +247,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	addTransaction: transaction => dispatch(addTransactionAction(transaction)),
 	updateTransaction: (transaction, index) => dispatch(changeTransactionAction(transaction, index)),
-	removeTransaction: index => dispatch(removeTransactionAction(index)),
-	changeBalance: balance => dispatch(changeBalanceAction(balance))
+	changeBalance: balance => dispatch(changeBalanceAction(balance)),
+	removeTransaction: index => dispatch(removeTransactionAction(index))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddMoneyScreen))
