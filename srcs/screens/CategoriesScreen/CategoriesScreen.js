@@ -4,7 +4,7 @@ import { alert } from '@config'
 import { withRouter } from 'react-router-native'
 import { StyleSheet, Modal, Text } from 'react-native'
 import { ScreenHeader, AddCategory } from '@components'
-import { addCategoryAction, removeCategoryAction, changeCategoryNameAction, removeAllTransactionsWithCategoryAction } from '@redux'
+import { addCategoryAction, removeCategoryAction, changeCategoryNameAction, removeAllTransactionsWithCategoryAction, changeBalanceWithCategoryAction } from '@redux'
 import { Button, Container, Content, List, ListItem, Icon, Input, Footer, FooterTab, Toast, Root } from 'native-base'
 
 const styles = StyleSheet.create({
@@ -56,12 +56,13 @@ class CategoriesScreen extends React.Component {
 
 	removeCategory = (index) => {
 		
-		const onOk = () => {
+		const onOkay = () => {
+			this.props.changeBalanceWithCategory(this.props.transactions, index)
 			this.props.removeAllTransactionsWithCategory(index)
 			this.props.removeCategory(index)
 		}
 
-		alert('Are you sure?', 'It will delete all the transactions with this category as well.', onOk)
+		alert('Are you sure?', 'It will delete all the transactions with this category as well.', onOkay)
 	}
 
 	render() {
@@ -105,11 +106,13 @@ class CategoriesScreen extends React.Component {
 
 const mapStateToProps = state => ({
 	categories: state.categoriesReducer.categories,
+	transactions: state.transactionReducer.transactions,
 })
 
 const mapDispatchToProps = dispatch => ({
-	addCategory: newCategory => dispatch(addCategoryAction(newCategory)),
 	removeCategory: index => dispatch(removeCategoryAction(index)),
+	addCategory: newCategory => dispatch(addCategoryAction(newCategory)),
+	changeBalanceWithCategory: (transactions, categoryId) => dispatch(changeBalanceWithCategoryAction(transactions, categoryId)),
 	changeCategoryName: (name, index) => dispatch(changeCategoryNameAction(name, index)),
 	removeAllTransactionsWithCategory: categoryId => dispatch(removeAllTransactionsWithCategoryAction(categoryId))
 })
