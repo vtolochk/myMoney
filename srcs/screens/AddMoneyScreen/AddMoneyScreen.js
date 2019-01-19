@@ -127,20 +127,42 @@ class AddMoneyScreen extends React.Component {
 			date: chosenDate,
 		}
 
-		let newBalance = this.props.balance - sum
-		if (segmentType === 'expenses') {
-			this.props.changeBalance(newBalance.toString()) // refactor here
+		if (this.isEdit >= 0) {
+			this.updateTransaction(transaction)
 		} else {
-			newBalance = +this.props.balance + +sum
+			let newBalance = this.props.balance - sum
+			if (segmentType === 'income') {
+				newBalance = +this.props.balance + +sum
+			}
+			this.props.changeBalance(newBalance.toString())
+			this.props.addTransaction(transaction)
+		}
+		this.props.history.push(TRANSACTIONS_PATH)
+	}
+
+	// maybe better to move this logic to the reducer 
+	updateTransaction = (transaction) => {
+		const prevSum = this.props.transactions[this.isEdit].sum
+		const prevType = this.props.transactions[this.isEdit].type
+	
+		if (prevSum != transaction.sum || prevType != transaction.segmentType) {
+			let newBalance = this.props.balance
+
+			// restoring old balance
+			newBalance = this.props.balance - prevSum
+			if (prevType === 'expenses') {
+				newBalance = +this.props.balance + +prevSum
+			}
+
+			// update current balance
+			if (transaction.type === 'income') {
+				newBalance = +newBalance + +transaction.sum
+			} else {
+				newBalance = newBalance - transaction.sum
+			}
 			this.props.changeBalance(newBalance.toString())
 		}
-
-		if (this.isEdit >= 0)
-			this.props.updateTransaction(transaction, this.isEdit)
-		else
-			this.props.addTransaction(transaction)
-		
-		this.props.history.push(TRANSACTIONS_PATH)
+		this.props.updateTransaction(transaction, this.isEdit)
 	}
 
 	deleteTransaction = () => {
@@ -239,16 +261,16 @@ class AddMoneyScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+	balance: state.balanceReducer.balance,
 	categories: state.categoriesReducer.categories,
 	transactions: state.transactionReducer.transactions,
-	balance: state.balanceReducer.balance
 })
 
 const mapDispatchToProps = dispatch => ({
+	changeBalance: balance => dispatch(changeBalanceAction(balance)),
+	removeTransaction: index => dispatch(removeTransactionAction(index)),
 	addTransaction: transaction => dispatch(addTransactionAction(transaction)),
 	updateTransaction: (transaction, index) => dispatch(changeTransactionAction(transaction, index)),
-	changeBalance: balance => dispatch(changeBalanceAction(balance)),
-	removeTransaction: index => dispatch(removeTransactionAction(index))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddMoneyScreen))
