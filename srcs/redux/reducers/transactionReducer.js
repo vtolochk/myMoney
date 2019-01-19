@@ -16,7 +16,7 @@ export default function transactionReducer (state = initialState, action = {}) {
 	}
 	case REMOVE_TRANSACTION:
 	{
-		newState.transactions.splice(action.payload.index, 1)
+		newState.transactions.splice(action.payload, 1)
 		newState.transactions = [...newState.transactions]
 		return newState
 	}
