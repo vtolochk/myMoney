@@ -20,18 +20,18 @@ const styles = StyleSheet.create({
 })
 
 class CurrentBalanceCard extends React.PureComponent {
-    render() {
+	render() {
 		const { isPositive, balance } = this.props
 		const textStyle = isPositive ? styles.positiveStyle : styles.negativeStyle
-        return (
-            <Card>
-			<CardItem style={styles.textContainer}>
-                <Text style={{...styles.text, ...textStyle}}>{balance}</Text>
-                <Text>Current balance</Text>
-			</CardItem>
+		return (
+			<Card>
+				<CardItem style={styles.textContainer}>
+					<Text style={{...styles.text, ...textStyle}}>{balance}</Text>
+					<Text>Current balance</Text>
+				</CardItem>
 			</Card>
-        )
-    }
+		)
+	}
 }
 
 export default CurrentBalanceCard
