@@ -1,10 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { authUserAction } from '@redux'
+import { MoneyAnimation } from '@assets'
 import { StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
-import { MoneyAnimation } from '@assets'
-import { Container, Header, Button, Text,  Left, Body, Right, Title } from 'native-base'
-import { withRouter } from 'react-router-native'
 import { TRANSACTIONS_PATH } from '@navigation'
+import { withRouter } from 'react-router-native'
+import { Container, Header, Button, Text,  Left, Body, Right, Title } from 'native-base'
 
 const styles = StyleSheet.create({
 	headerText: {
@@ -26,7 +28,14 @@ const styles = StyleSheet.create({
 class LoginScreen extends React.Component {
 
 	LoginUser = () => {
+		this.props.setAuth(true)
 		this.props.history.push(TRANSACTIONS_PATH)
+	}
+
+	componentDidUpdate() { // it takes some time to read data from async storage, so u will see login screen for a second after next login,
+		if (this.props.isAuth) { // could be solved by adding load spinner
+			this.props.history.push(TRANSACTIONS_PATH)
+		}
 	}
 
 	render() {
@@ -51,4 +60,12 @@ class LoginScreen extends React.Component {
 	}
 }
 
-export default withRouter(LoginScreen)
+const mapStateToProps = state => ({
+	isAuth: state.userReducer.auth
+})
+
+const mapDispatchToProps = dispatch => ({
+	setAuth: auth => dispatch(authUserAction(auth))
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginScreen))
