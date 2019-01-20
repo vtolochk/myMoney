@@ -1,8 +1,9 @@
 import { INITIAL_BALANCE } from '@config'
-import { CHANGE_BALANCE, CHANGE_BALANCE_WITH_CATEGORY } from '../actionTypes'
+import { CHANGE_BALANCE, CHANGE_BALANCE_WITH_CATEGORY, SET_INITIAL_BALANCE } from '../actionTypes'
 
 const initialState = {
-	balance: INITIAL_BALANCE
+	balance: INITIAL_BALANCE,
+	initialBalance: INITIAL_BALANCE,
 }
 
 export default function balanceReducer (state = initialState, action = {}) {
@@ -27,6 +28,12 @@ export default function balanceReducer (state = initialState, action = {}) {
 		newState.balance = +newState.balance + +toRemoveFromBalance.expenses
 		newState.balance = newState.balance - toRemoveFromBalance.income
 		newState.balance = newState.balance.toString()
+		return newState
+	}
+	case SET_INITIAL_BALANCE:
+	{
+		newState.balance = action.payload
+		newState.initialBalance = action.payload
 		return newState
 	}
 	default:

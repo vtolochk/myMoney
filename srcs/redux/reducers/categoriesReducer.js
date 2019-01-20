@@ -1,5 +1,5 @@
 import { INITIAL_CATEGORIES } from '@config'
-import { ADD_CATEGORY, REMOVE_CATEGORY, CHANGE_CATEGORY_NAME } from '../actionTypes'
+import { ADD_CATEGORY, REMOVE_CATEGORY, CHANGE_CATEGORY_NAME, RESTORE_ALL_CATEGORIES } from '../actionTypes'
 
 const initialState = {
 	categories: INITIAL_CATEGORIES
@@ -24,6 +24,11 @@ export default function categoriesReducer (state = initialState, action = {}) {
 	{
 		newState.categories[action.payload.index] = action.payload.name
 		newState.categories = [...newState.categories]
+		return newState
+	}
+	case RESTORE_ALL_CATEGORIES:
+	{
+		newState.categories = [...INITIAL_CATEGORIES]
 		return newState
 	}
 	default:
