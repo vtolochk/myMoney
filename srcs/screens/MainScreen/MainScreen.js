@@ -51,10 +51,10 @@ class MainScreen extends React.Component {
 				path: WALLET_PATH,
 			},
 		]
-		const { activeRoute } = this.state
+		const { activeRoute, activeTitle } = this.state
 		return (	
 			<Container>
-				<ScreenHeader title={this.state.activeTitle} />
+				<ScreenHeader title={activeTitle} />
 				<Content>
 					<Route path={TRANSACTIONS_PATH} component={Transactions} />
 					<Route path={OVERVIEW_PATH} component={Overview} />

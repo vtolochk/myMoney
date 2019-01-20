@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	},
 })
 
-class DatePickerCard extends React.Component {
+class DatePickerCard extends React.PureComponent {
 	render() {
 		const { activeDate, onDateChange, title } = this.props
 		return (

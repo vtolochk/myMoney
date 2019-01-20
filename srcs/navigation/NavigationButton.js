@@ -1,6 +1,6 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
 import { withRouter } from 'react-router'
+import { StyleSheet, View } from 'react-native'
 import { Button, Icon, Text } from 'native-base'
 
 const styles = StyleSheet.create({
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 		width: 65,
 		bottom: 5, 
 		borderRadius: 35, 
-		justifyContent: 'center'
+		justifyContent: 'center',
 	}
 })
 

@@ -1,11 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { alert } from '@config'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-native'
 import { StyleSheet, Modal, Text } from 'react-native'
 import { ScreenHeader, AddCategory } from '@components'
-import { addCategoryAction, removeCategoryAction, changeCategoryNameAction, removeAllTransactionsWithCategoryAction, changeBalanceWithCategoryAction } from '@redux'
 import { Button, Container, Content, List, ListItem, Icon, Input, Footer, FooterTab, Toast, Root } from 'native-base'
+import { addCategoryAction, removeCategoryAction, changeCategoryNameAction, removeAllTransactionsWithCategoryAction, changeBalanceWithCategoryAction } from '@redux'
 
 const styles = StyleSheet.create({
 	addButton: {
