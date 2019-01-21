@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	title: {
 		minWidth: 100
 	},
-	icon: { // pass style for the icon via props to make it more independent
+	icon: { // it is better to pass style for the icon via props to make it more reusable
 		color: 'red',
 		paddingRight: 10
 	}

@@ -83,6 +83,8 @@ class AddMoneyScreen extends React.Component {
 		super(props)
 		this.isEdit = this.props.location.state ? this.props.location.state.id : -1 // redirect from transaction or main screen
 		
+		// isEdit - index of transaction to edit
+
 		this.dateTitle = this.isEdit >= 0 ? 'Edit date' : 'Choose date'
 		this.categoryTitle = this.isEdit >= 0 ? 'Edit category' : 'Choose category'
 		this.headerTitle = this.isEdit >= 0 ? 'Edit transaction' : 'New transaction'

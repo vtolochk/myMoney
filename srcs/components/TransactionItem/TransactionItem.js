@@ -8,9 +8,9 @@ const styles = StyleSheet.create({
 	},
 	cardContent: {
 		flex: 1,
-		justifyContent: 'space-between',
+		flexWrap: 'wrap',
 		alignItems: 'center',
-		flexWrap: 'wrap'
+		justifyContent: 'space-between',
 	},
 	description: {
 		fontSize: 14,

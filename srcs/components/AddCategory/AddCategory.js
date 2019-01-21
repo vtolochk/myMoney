@@ -6,21 +6,21 @@ import { Container, Content, Input, Icon, Button, Text } from 'native-base'
 
 const styles = StyleSheet.create({
 	input: {
-		borderBottomColor: 'grey', 
-		borderBottomWidth: 0.3, 
+		margin: 5,
 		fontSize: 28,
-		margin: 5
+		borderBottomWidth: 0.3,
+		borderBottomColor: 'grey',  
 	},
 	buttonsContainer : {
 		flex: 1,
 		flexDirection: 'row',
-		justifyContent: 'space-around',
 		alignItems: 'flex-end',
+		justifyContent: 'space-around',
 	},
 	flexCenter: {
 		flex: 1,
+		margin: 5,
 		justifyContent: 'center',
-		margin: 5
 	}
 })
 

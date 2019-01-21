@@ -112,9 +112,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	removeCategory: index => dispatch(removeCategoryAction(index)),
 	addCategory: newCategory => dispatch(addCategoryAction(newCategory)),
-	changeBalanceWithCategory: (transactions, categoryId) => dispatch(changeBalanceWithCategoryAction(transactions, categoryId)),
 	changeCategoryName: (name, index) => dispatch(changeCategoryNameAction(name, index)),
-	removeAllTransactionsWithCategory: categoryId => dispatch(removeAllTransactionsWithCategoryAction(categoryId))
+	removeAllTransactionsWithCategory: categoryId => dispatch(removeAllTransactionsWithCategoryAction(categoryId)),
+	changeBalanceWithCategory: (transactions, categoryId) => dispatch(changeBalanceWithCategoryAction(transactions, categoryId))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen))

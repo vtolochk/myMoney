@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 	},
 })
 
-class Wallet extends React.PureComponent {
+class Wallet extends React.Component {
 
 	state = {
 		inputBalance: this.props.initialBalance
