@@ -1,4 +1,4 @@
-# myMoney
+# myMoney 💸
 ### myMoney is an application for calculating income and expenses.
 
 #### Functionality:
@@ -14,10 +14,10 @@
 <div style='font-size: 24px; text-align: center'>Android</div>
 
 
-<img src='./screenshots/android1.jpg' style='width: 200px; margin: 25px'>
-<img src='./screenshots/android2.jpg' style='width: 200px; margin: 25px'>
-<img src='./screenshots/android3.jpg' style='width: 200px; margin: 25px'>
-<img src='./screenshots/android4.jpg' style='width: 200px; margin: 25px'>
+<img src='./screenshots/android1.jpg' style='width: 150px; height: 150px; margin: 25px'>
+<img src='./screenshots/android2.jpg' style='width: 150px; height: 150px; margin: 25px'>
+<img src='./screenshots/android3.jpg' style='width: 150px; height: 150px; margin: 25px'>
+<img src='./screenshots/android4.jpg' style='width: 150px; height: 150px; margin: 25px'>
 
 <div style='font-size: 24px; text-align: center'>IOS</div>
 
