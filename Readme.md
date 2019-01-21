@@ -11,20 +11,23 @@
 
 4. All data is saved and not lost after application restart.
 
-<div style='font-size: 24px; text-align: center'>Android</div>
+## Android
 
+<p align="center">
+<img src='./screenshots/android1.jpg' style='width: 120px; height: 150px; margin: 10px'>
+<img src='./screenshots/android2.jpg' style='width: 120px; height: 150px; margin: 10px'>
+<img src='./screenshots/android3.jpg' style='width: 120px; height: 150px; margin: 10px'>
+<img src='./screenshots/android4.jpg' style='width: 120px; height: 150px; margin: 10px'>
+</p>
 
-<img src='./screenshots/android1.jpg' style='width: 150px; height: 150px; margin: 25px'>
-<img src='./screenshots/android2.jpg' style='width: 150px; height: 150px; margin: 25px'>
-<img src='./screenshots/android3.jpg' style='width: 150px; height: 150px; margin: 25px'>
-<img src='./screenshots/android4.jpg' style='width: 150px; height: 150px; margin: 25px'>
+## IOS
 
-<div style='font-size: 24px; text-align: center'>IOS</div>
-
+<p align="center">
 <img src='./screenshots/iphone1.jpg' style='width: 200px; margin: 25px'>
 <img src='./screenshots/iphone2.jpg' style='width: 200px; margin: 25px'>
 <img src='./screenshots/iphone3.jpg' style='width: 200px; margin: 25px'>
 <img src='./screenshots/iphone4.jpg' style='width: 200px; margin: 25px'>
+ </p>
 
 ## How to launch ?
 
@@ -56,5 +59,5 @@ This app was built in six days cause of my workload. I would like to make it bet
 
 6. Lottie-react-native - as a executor for lottie animations
 
-## Additional Information
-    This app was built in six days cause of my workload. I would like to make it better and add some tests, animations and flow in the future.
+### Additional Information
+  This app was built in six days cause of my workload. I would like to make it better and add some tests, animations and flow in the future.
