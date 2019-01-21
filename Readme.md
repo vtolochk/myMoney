@@ -14,19 +14,19 @@
 ## Android
 
 <p align="center">
-<img src='./screenshots/android1.jpg' height="370" width="200">
-<img src='./screenshots/android2.jpg' height="370" width="200">
-<img src='./screenshots/android3.jpg' height="370" width="200">
-<img src='./screenshots/android4.jpg' height="370" width="200">
+<img src='./screenshots/android1.jpg' height="390" width="200">
+<img src='./screenshots/android2.jpg' height="390" width="200">
+<img src='./screenshots/android3.jpg' height="390" width="200">
+<img src='./screenshots/android4.jpg' height="390" width="200">
 </p>
 
 ## IOS
 
 <p align="center">
-<img src='./screenshots/iphone1.jpg' style='width: 200px; margin: 25px'>
-<img src='./screenshots/iphone2.jpg' style='width: 200px; margin: 25px'>
-<img src='./screenshots/iphone3.jpg' style='width: 200px; margin: 25px'>
-<img src='./screenshots/iphone4.jpg' style='width: 200px; margin: 25px'>
+<img src='./screenshots/iphone1.jpg' height="390" width="200">
+<img src='./screenshots/iphone2.jpg' height="390" width="200">
+<img src='./screenshots/iphone3.jpg' height="390" width="200">
+<img src='./screenshots/iphone4.jpg' height="390" width="200">
  </p>
 
 ## How to launch ?
