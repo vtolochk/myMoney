@@ -14,10 +14,10 @@
 ## Android
 
 <p align="center">
-<img src='./screenshots/android1.jpg' height="280" width="180">
-<img src='./screenshots/android2.jpg' height="280" width="180">
-<img src='./screenshots/android3.jpg' height="280" width="180">
-<img src='./screenshots/android4.jpg' height="280" width="180">
+<img src='./screenshots/android1.jpg' height="310" width="190">
+<img src='./screenshots/android2.jpg' height="310" width="190">
+<img src='./screenshots/android3.jpg' height="310" width="190">
+<img src='./screenshots/android4.jpg' height="310" width="190">
 </p>
 
 ## IOS
