@@ -48,7 +48,7 @@
  ## Dependencies
 
 1. React/React Native - as a basis
-This app was built in six days cause of my workload. I would like to make it better and add some tests, animations and flow in the future.
+
 2. Redux - as a store manager
 
 3. Redux-persist - as a AsyncStorage
@@ -57,7 +57,7 @@ This app was built in six days cause of my workload. I would like to make it bet
 
 5. React-native-chart-kit - as a chart
 
-6. Lottie-react-native - as a executor for lottie animations
+6. Lottie-react-native - as an executor for lottie animations
 
 ### Additional Information
   This app was built in six days cause of my workload. I would like to make it better and add some tests, animations and flow in the future.
